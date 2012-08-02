@@ -21,7 +21,8 @@ sub request_fathead_output {
     while ( my $line = $file->getline ) {
         my $title = ${split( /\t/, $line )}[0];
         
-        # Return the result if the query matches the title
+        # If the query matches the title, return the DDG::ZeroClickInfo::Fathead
+        # object that represents the matching result.
         if ( $title eq $request->query_clean ) {
             return DDG::ZeroClickInfo::Fathead->new_via_output($line);
         }
