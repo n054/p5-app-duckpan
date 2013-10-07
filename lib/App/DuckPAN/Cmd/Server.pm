@@ -13,6 +13,7 @@ use IO::All -utf8;
 use LWP::Simple;
 use HTML::TreeBuilder;
 use Config::INI;
+use Plack::Builder;
 
 sub run {
 	my ( $self, @args ) = @_;
@@ -92,8 +93,11 @@ sub run {
 		includes => ['lib'],
 		app => sub { $web->run_psgi(@_) },
 	);
+	my $app = builder {
+		enable 'RedirectSSL', 'ssl' => 0;
+	};
 	#$runner->loader->watch("./lib");
-	exit $runner->run;
+	exit $runner->run($app);
 }
 
 sub change_js {
